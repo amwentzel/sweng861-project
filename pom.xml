@@ -3,4 +3,13 @@
   <groupId>sweng861-project</groupId>
   <artifactId>sweng861-project</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+  	<dependency>
+    	<groupId>org.mongodb</groupId>
+    	<artifactId>mongo-java-driver</artifactId>
+    	<version>3.4.1</version>
+	</dependency>
+  </dependencies>
+
 </project>
