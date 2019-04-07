@@ -23,10 +23,10 @@ public class FrameChange extends JFrame {
 	public FrameChange(){
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    initMenu();
-	    panel1.setBackground(Color.BLUE);
-	    panel2.setBackground(Color.RED);
-	    panel3.setBackground(Color.YELLOW);
-	    panel4.setBackground(Color.GREEN);
+//	    panel1.setBackground(Color.BLUE);
+//	    panel2.setBackground(Color.RED);
+//	    panel3.setBackground(Color.YELLOW);
+//	    panel4.setBackground(Color.GREEN);
 	    setLayout(new BorderLayout());
 	}
 
@@ -37,7 +37,7 @@ public class FrameChange extends JFrame {
 	    }
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-	        changePanel("Nearby Gyms:");
+	        changePanel("Classes");
 	    }
 	}
 	
@@ -45,7 +45,7 @@ public class FrameChange extends JFrame {
 	    JMenuBar menuBar = new JMenuBar();
 	    JMenu menu1 = new JMenu("Gyms");
 	    JMenu menu2 = new JMenu("Health");
-	    JMenuItem menuItem1 = new JMenuItem("Class Schedule");
+	    JMenuItem menuItem1 = new JMenuItem("Classes");
 	    JMenuItem menuItem2 = new JMenuItem("Pricing");
 	    JMenuItem menuItem3 = new JMenuItem("Your Profile");
 	    JMenuItem menuItem4 = new JMenuItem("Class History");
@@ -63,14 +63,18 @@ public class FrameChange extends JFrame {
 	}
 	
 	private void changePanel(String panel) {
-	    getContentPane().removeAll();
-	    getContentPane().add(new PanelChange(), BorderLayout.CENTER);
-	    getContentPane().doLayout();
-	    update(getGraphics());
+	    if ("classes".contentEquals(panel)) {
+	    	getContentPane().removeAll();
+	    	PanelChange panelChange = new PanelChange();
+	    	getContentPane().add(panelChange.paintClasses(panelChange.getGraphics()), BorderLayout.CENTER);
+	    	getContentPane().doLayout();
+	    	update(getGraphics());
+	    }
 	}
 	
 	public static void main(String[] args) {
 	    FrameChange frame = new FrameChange();
+	    frame.setTitle("");
 	    frame.setSize(800, 600);
 	    frame.setVisible(true);
 	}

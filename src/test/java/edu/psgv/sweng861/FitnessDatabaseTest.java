@@ -3,18 +3,18 @@ package edu.psgv.sweng861;
 import org.junit.Before;
 import org.junit.Test;
 
-public class FitnessTest {
+public class FitnessDatabaseTest {
 
-	public Fitness fitness;
+	public FitnessDatabase fitnessDB;
 	
 	@Before
 	public void setUp() {
-		fitness = new Fitness();
+		fitnessDB = new FitnessDatabase();
 	}
 	
 	@Test
 	public void testMongoSetup() {
-		fitness.mongoSetup();
+		fitnessDB.mongoSetup();
 	}
 	
 }

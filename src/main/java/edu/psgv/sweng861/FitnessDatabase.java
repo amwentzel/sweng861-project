@@ -1,40 +1,58 @@
 package edu.psgv.sweng861;
 
+import com.mindbodyonline.clients.api._0_5_1.class_service.Class;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
-public class Fitness {
 
+public class FitnessDatabase {
+
+	public DB database;
+	
+	@SuppressWarnings("deprecation")
+	public FitnessDatabase() {
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		database = mongoClient.getDB("myMongoDb");
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void mongoSetup() {
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
-		DB database = mongoClient.getDB("myMongoDb");
+		database = mongoClient.getDB("myMongoDb");
 //		boolean auth = database.authenticate("username", "pwd".toCharArray());
 		mongoClient.getDatabaseNames().forEach(System.out::println);
 		
-		addCollections(database);
+		addCollections();
 	}
 	
-	private void addCollections(DB database) {
+	public void addClasses(Class classInstance) {
+		database.createCollection("Classes", null);
+		DBCollection collection = database.getCollection("Classes");
+		BasicDBObject document = new BasicDBObject();
+		document.put("Class", classInstance.getClassDescription().getName());
+		collection.insert(document);
+	}
+	
+	private void addCollections() {
 		database.createCollection("gyms", null);
-		addGymsToCollection(database);
+		addGymsToCollection();
 		database.createCollection("schedules", null);
-		addSchedulesToCollection(database);
+		addSchedulesToCollection();
 		database.createCollection("health", null);
-		addHealthToCollection(database);
+		addHealthToCollection();
 		database.getCollectionNames().forEach(System.out::println);
 	}
 	
-	private void addGymsToCollection(DB database) {
+	private void addGymsToCollection() {
 		DBCollection collection = database.getCollection("gyms");
 		BasicDBObject document = new BasicDBObject();
 		document.put("gym", "Aerial Fitness LLC");
 		collection.insert(document);
 	}
 
-	private void addSchedulesToCollection(DB database) {
+	private void addSchedulesToCollection() {
 		DBCollection collection = database.getCollection("schedules");
 		BasicDBObject document = new BasicDBObject();
 		document.put("gym", "Aerial Fitness LLC");
@@ -44,7 +62,7 @@ public class Fitness {
 		collection.insert(document);
 	}
 
-	private void addHealthToCollection(DB database) {
+	private void addHealthToCollection() {
 		DBCollection collection = database.getCollection("health");
 		BasicDBObject document = new BasicDBObject();
 		document.put("calories burned", "500");
