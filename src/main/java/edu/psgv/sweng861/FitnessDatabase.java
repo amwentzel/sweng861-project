@@ -15,6 +15,7 @@ public class FitnessDatabase {
 	public FitnessDatabase() {
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
 		database = mongoClient.getDB("myMongoDb");
+		database.createCollection("Classes", null);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -28,11 +29,18 @@ public class FitnessDatabase {
 	}
 	
 	public void addClasses(Class classInstance) {
-		database.createCollection("Classes", null);
 		DBCollection collection = database.getCollection("Classes");
-		BasicDBObject document = new BasicDBObject();
-		document.put("Class", classInstance.getClassDescription().getName());
-		collection.insert(document);
+		collection.insert(new BasicDBObject().append("Class", classInstance.getClassDescription().getName())
+				.append("Location", classInstance.getLocation().getAddress())
+				.append("Start", classInstance.getStartDateTime().getValue().toString())
+				.append("End", classInstance.getEndDateTime().getValue().toString()));
+		
+//		BasicDBObject document = new BasicDBObject();
+//		document.put("Class", classInstance.getClassDescription().getName());
+//		document.put("Location", classInstance.getLocation().getAddress());
+//		document.put("Start", classInstance.getStartDateTime().getValue().toString());
+//		document.put("End", classInstance.getEndDateTime().getValue().toString());
+//		collection.insert(document);
 	}
 	
 	private void addCollections() {

@@ -63,10 +63,9 @@ public class FrameChange extends JFrame {
 	}
 	
 	private void changePanel(String panel) {
-	    if ("classes".contentEquals(panel)) {
+	    if ("Classes".contentEquals(panel)) {
 	    	getContentPane().removeAll();
-	    	PanelChange panelChange = new PanelChange();
-	    	getContentPane().add(panelChange.paintClasses(panelChange.getGraphics()), BorderLayout.CENTER);
+	    	getContentPane().add(new ClassesPanelChange(), BorderLayout.CENTER);
 	    	getContentPane().doLayout();
 	    	update(getGraphics());
 	    }
