@@ -12,9 +12,4 @@ public class FitnessDatabaseTest {
 		fitnessDB = new FitnessDatabase();
 	}
 	
-	@Test
-	public void testMongoSetup() {
-		fitnessDB.mongoSetup();
-	}
-	
 }

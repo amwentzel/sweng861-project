@@ -19,25 +19,47 @@ public class ClassesPanelChange extends JPanel {
 	private GymClasses gymClasses = new GymClasses();
 	
 	public void paint(Graphics g) {
-		g.setColor(Color.BLACK);
 		DB fitnessDB = gymClasses.fitnessDB.database;
+
 		DBCollection classes = fitnessDB.getCollection("Classes");
-		DBCursor cursor = classes.find();
+		DBCollection locations = fitnessDB.getCollection("Locations");
+		DBCollection teachers = fitnessDB.getCollection("Teachers");
+		DBCollection dates = fitnessDB.getCollection("Dates");
+		DBCollection startTimes = fitnessDB.getCollection("StartTimes");
+		DBCollection endTimes = fitnessDB.getCollection("EndTimes");
+		
+		DBCursor classesCursor = classes.find();
+		DBCursor locationsCursor = locations.find();
+		DBCursor teachersCursor = teachers.find();
+		DBCursor datesCursor = dates.find();
+		DBCursor startTimesCursor = startTimes.find();
+		DBCursor endTimesCursor = endTimes.find();
+		
+		g.setColor(Color.BLACK);
 		int i = 0;
+		int count = 0;
         try {
-            while(cursor.hasNext()) {
-            	DBObject dbObject = cursor.next();
-            	if (null != dbObject.get("Location")) {
-            		g.drawString("Class: " + dbObject.get("Class") + " Location: " + dbObject.get("Location"), 10, 10+i);
-            	} else if (null != dbObject.get("Start")) {
-            		g.drawString("Class: " + dbObject.get("Class") + " Start Time: " + dbObject.get("Start"), 10, 10+i);
-            	} else {
-            		g.drawString("Clas: " + dbObject.get("Class"), 10, 10+i);
-            	}
+            while(classesCursor.hasNext()) {
+//			while(count > 15) {
+            	DBObject classObj = classesCursor.next();
+            	DBObject locationObj = locationsCursor.next();
+            	DBObject teacherObj = teachersCursor.next();
+            	DBObject dateObj = datesCursor.next();
+            	DBObject startTimeObj = startTimesCursor.next();
+            	DBObject endTimeObj = endTimesCursor.next();
+            	
+        		g.drawString("Class: " + classObj.get("Class") + " at " + locationObj.get("Location") 
+        			+ " with " + teacherObj.get("Teacher") + " on " + dateObj.get("Date") + " from " 
+        			+ startTimeObj.get("Start") + " until " + endTimeObj.get("End"), 10, 10+i);
+            		
             	i+=15;
+            	count++;
+            	if (count == classes.count()) {
+            		break;
+            	}
             }
         } finally {
-            cursor.close();
+            classesCursor.close();
         }		
 	}
 	

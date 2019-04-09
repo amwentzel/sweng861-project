@@ -52,10 +52,11 @@ public class GymClasses {
 			List<Class> classes = sales.getClazz();
 			for(Class classInstance: classes) {
 				fitnessDB.addClasses(classInstance);
-//				System.out.println("Class Name: " + classInstance.getClassDescription().getName());
-//				System.out.println("Location: " + classInstance.getLocation().getAddress());
-//				System.out.println("Start Time: " + classInstance.getStartDateTime().getValue().toString());
-//				System.out.println("End Time: " + classInstance.getEndDateTime().getValue().toString());
+				fitnessDB.addLocations(classInstance);
+				fitnessDB.addTeachers(classInstance);
+				fitnessDB.addDates(classInstance);
+				fitnessDB.addStartTimes(classInstance);
+				fitnessDB.addEndTimes(classInstance);
 			}
 		} else {
 			System.out.println("No classes returned");

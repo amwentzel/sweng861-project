@@ -6,76 +6,84 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
-
 public class FitnessDatabase {
 
 	public DB database;
+//	public MongoDatabase database;
 	
 	@SuppressWarnings("deprecation")
 	public FitnessDatabase() {
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
 		database = mongoClient.getDB("myMongoDb");
-		database.createCollection("Classes", null);
-	}
-	
-	@SuppressWarnings("deprecation")
-	public void mongoSetup() {
-		MongoClient mongoClient = new MongoClient("localhost", 27017);
-		database = mongoClient.getDB("myMongoDb");
-//		boolean auth = database.authenticate("username", "pwd".toCharArray());
-		mongoClient.getDatabaseNames().forEach(System.out::println);
+//		database = mongoClient.getDatabase("myMongoDb");
+		database.getCollection("Classes").drop();
+		database.getCollection("Teachers").drop();
+		database.getCollection("Locations").drop();
+		database.getCollection("Dates").drop();
+		database.getCollection("StartTimes").drop();
+		database.getCollection("EndTimes").drop();
 		
-		addCollections();
+		database.createCollection("Classes", null);
+		database.createCollection("Teachers", null);
+		database.createCollection("Locations", null);
+		database.createCollection("Dates", null);
+		database.createCollection("StartTimes", null);
+		database.createCollection("EndTimes", null);
 	}
 	
 	public void addClasses(Class classInstance) {
 		DBCollection collection = database.getCollection("Classes");
-		collection.insert(new BasicDBObject().append("Class", classInstance.getClassDescription().getName())
-				.append("Location", classInstance.getLocation().getAddress())
-				.append("Start", classInstance.getStartDateTime().getValue().toString())
-				.append("End", classInstance.getEndDateTime().getValue().toString()));
-		
-//		BasicDBObject document = new BasicDBObject();
-//		document.put("Class", classInstance.getClassDescription().getName());
-//		document.put("Location", classInstance.getLocation().getAddress());
-//		document.put("Start", classInstance.getStartDateTime().getValue().toString());
-//		document.put("End", classInstance.getEndDateTime().getValue().toString());
-//		collection.insert(document);
-	}
-	
-	private void addCollections() {
-		database.createCollection("gyms", null);
-		addGymsToCollection();
-		database.createCollection("schedules", null);
-		addSchedulesToCollection();
-		database.createCollection("health", null);
-		addHealthToCollection();
-		database.getCollectionNames().forEach(System.out::println);
-	}
-	
-	private void addGymsToCollection() {
-		DBCollection collection = database.getCollection("gyms");
 		BasicDBObject document = new BasicDBObject();
-		document.put("gym", "Aerial Fitness LLC");
+		document.put("Class", classInstance.getClassDescription().getName());
+		collection.insert(document);
+	}
+	
+	public void addLocations(Class classInstance) {
+		DBCollection collection = database.getCollection("Locations");
+		BasicDBObject document = new BasicDBObject();
+		document.put("Location", classInstance.getLocation().getAddress());
+		collection.insert(document);
+	}
+	
+	public void addTeachers(Class classInstance) {
+		DBCollection collection = database.getCollection("Teachers");
+		BasicDBObject document = new BasicDBObject();
+		String teacher = classInstance.getStaff().getFirstName() + " " + classInstance.getStaff().getLastName();
+		document.put("Teacher", teacher);
 		collection.insert(document);
 	}
 
-	private void addSchedulesToCollection() {
-		DBCollection collection = database.getCollection("schedules");
+	public void addDates(Class classInstance) {
+		DBCollection collection = database.getCollection("Dates");
 		BasicDBObject document = new BasicDBObject();
-		document.put("gym", "Aerial Fitness LLC");
-		document.put("monday", "5pm, 6pm, 7pm");
-		document.put("tuesday", "4:30pm, 6pm");
-		document.put("price", "$25");
+		String date = classInstance.getStartDateTime().getValue().getMonth() + "-" +
+				classInstance.getStartDateTime().getValue().getDay() + "-" +
+				classInstance.getStartDateTime().getValue().getYear();
+		document.put("Date", date);
 		collection.insert(document);
 	}
-
-	private void addHealthToCollection() {
-		DBCollection collection = database.getCollection("health");
+	
+	public void addStartTimes(Class classInstance) {
+		DBCollection collection = database.getCollection("StartTimes");
 		BasicDBObject document = new BasicDBObject();
-		document.put("calories burned", "500");
-		document.put("day", "monday 25th");
-		document.put("tuesday", "4:30pm, 6pm");
+		String start = classInstance.getStartDateTime().getValue().getHour() + ":" +
+				classInstance.getStartDateTime().getValue().getMinute();
+		if (classInstance.getStartDateTime().getValue().getMinute() == 0) {
+			start+="0";
+		}
+		document.put("Start", start);
+		collection.insert(document);
+	}
+	
+	public void addEndTimes(Class classInstance) {
+		DBCollection collection = database.getCollection("EndTimes");
+		BasicDBObject document = new BasicDBObject();
+		String end = classInstance.getEndDateTime().getValue().getHour() + ":" +
+				classInstance.getEndDateTime().getValue().getMinute();
+		if (classInstance.getEndDateTime().getValue().getMinute() == 0) {
+			end+="0";
+		}
+		document.put("End", end);
 		collection.insert(document);
 	}
 	
