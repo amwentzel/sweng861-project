@@ -6,6 +6,7 @@ public class GymClassesTest {
 
 	@Test
 	public void testStart() {
+		@SuppressWarnings("unused")
 		GymClasses gymClasses = new GymClasses();
 	}
 
