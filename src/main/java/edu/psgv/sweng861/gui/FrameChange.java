@@ -16,7 +16,7 @@ public class FrameChange extends JFrame {
 //	private JPanel panel1 = new JPanel();
 	private ClassesPanelChange panel1 = new ClassesPanelChange();
 //	private JPanel panel2 = new JPanel();
-	private VisitsPanelChange panel2 = new VisitsPanelChange();
+	private ProfilePanelChange panel2 = new ProfilePanelChange();
 		
 	public FrameChange(){
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -46,8 +46,8 @@ public class FrameChange extends JFrame {
 	    menu1.add(menuItem1);
 	    menu2.add(menuItem2);
 	    setJMenuBar(menuBar);
-	    panel1.createLabel(panel1);
-	    panel2.createLabel(panel2);
+	    panel1.createLabel(panel2);
+	    panel2.createLabel();
 	    menuItem1.addActionListener(new MenuAction(panel1));
 	    menuItem2.addActionListener(new MenuAction(panel2));
 	}
